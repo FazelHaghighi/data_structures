@@ -1,14 +1,17 @@
-class graph:
-    def DFS(self, graph, start, visited=None):
-        if visited is None:
-            visited = set()
-        visited.add(start)
-        for next in graph[start] - visited:
-            self.DFS(graph, next, visited)
+class Graph:
+    def DFS(self, graph, start):
+        visited = set()
+        self._dfs_helper(graph, start, visited)
         return visited
 
+    def _dfs_helper(self, graph, start, visited):
+        visited.add(start)
+        for next_vertex in graph[start] - visited:
+            self._dfs_helper(graph, next_vertex, visited)
+
     def BFS(self, graph, start):
-        visited, queue = set(), [start]
+        visited = set()
+        queue = [start]
         while queue:
             vertex = queue.pop(0)
             if vertex not in visited:
@@ -18,8 +21,8 @@ class graph:
 
 
 if __name__ == "__main__":
-    g = graph()
-    graph = {
+    g = Graph()
+    my_graph = {
         "A": set(["B", "C"]),
         "B": set(["A", "D", "E"]),
         "C": set(["A", "F"]),
@@ -27,6 +30,5 @@ if __name__ == "__main__":
         "E": set(["B", "F"]),
         "F": set(["C", "E"]),
     }
-    print(g.DFS(graph, "B"))
-
-    print(g.BFS(graph, "E"))
+    print(g.DFS(my_graph, "B"))
+    print(g.BFS(my_graph, "E"))

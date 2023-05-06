@@ -1,54 +1,38 @@
-class sparse_matrix:
+class SparseMatrix:
     def __init__(self, row, col, value):
         self.row = row
         self.col = col
         self.value = value
         self.matrix = self.create_matrix()
-        self.row_index = self.create_row_index()
-        self.col_index = self.create_col_index()
+        self.row_index = self.create_index(self.matrix, True)
+        self.col_index = self.create_index(self.matrix, False)
 
     def create_matrix(self):
-        matrix = []
-        for i in range(self.row):
-            matrix.append([])
-            for j in range(self.col):
-                matrix[i].append(0)
-        for i in range(len(self.value)):
-            matrix[self.value[i][0]][self.value[i][1]] = self.value[i][2]
+        matrix = [[0] * self.col for _ in range(self.row)]
+        for i, j, val in self.value:
+            matrix[i][j] = val
         return matrix
 
-    def create_row_index(self):
-        row_index = []
-        for i in range(self.row):
-            row_index.append([])
-            for j in range(self.col):
-                if self.matrix[i][j] != 0:
-                    row_index[i].append(j)
-        return row_index
-
-    def create_col_index(self):
-        col_index = []
-        for i in range(self.col):
-            col_index.append([])
-            for j in range(self.row):
-                if self.matrix[j][i] != 0:
-                    col_index[i].append(j)
-        return col_index
+    def create_index(self, matrix, is_row):
+        index = [[] for _ in range(self.row if is_row else self.col)]
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
+                if (is_row and matrix[i][j] != 0) or (not is_row and matrix[j][i] != 0):
+                    index[i].append(j)
+        return index
 
     def multiply(self, other):
         if self.col != other.row:
-            print("Error: The two matrixs can not be multiplied.")
+            print("Error: The two matrices cannot be multiplied.")
             return None
-        else:
-            result = []
-            for i in range(self.row):
-                for j in range(other.col):
-                    sum = 0
-                    for k in range(self.col):
-                        sum += self.matrix[i][k] * other.matrix[k][j]
-                    if sum != 0:
-                        result.append([i, j, sum])
-            return result
+
+        result = []
+        for i in range(self.row):
+            for j in range(other.col):
+                val = sum(self.matrix[i][k] * other.matrix[k][j] for k in range(self.col))
+                if val != 0:
+                    result.append([i, j, val])
+        return result
 
     def transpose(self):
         result = []
@@ -59,13 +43,11 @@ class sparse_matrix:
         return result
 
 
-from sparse_matrix import sparse_matrix
-
 if __name__ == "__main__":
-    m1 = sparse_matrix(
+    m1 = SparseMatrix(
         3, 3, [[0, 0, 1], [0, 1, 2], [1, 0, 3], [1, 1, 4], [2, 0, 5], [2, 1, 6]]
     )
-    m2 = sparse_matrix(
+    m2 = SparseMatrix(
         3, 3, [[0, 0, 1], [0, 1, 2], [1, 0, 3], [1, 1, 4], [2, 0, 5], [2, 1, 6]]
     )
 

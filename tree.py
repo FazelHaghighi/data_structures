@@ -5,84 +5,73 @@ class Tree:
         self.data = data
 
     def insert(self, data):
-        if self.data:
-            if data < self.data:
-                if self.left is None:
-                    self.left = Tree(data)
-                else:
-                    self.left.insert(data)
-            elif data > self.data:
-                if self.right is None:
-                    self.right = Tree(data)
-                else:
-                    self.right.insert(data)
-        else:
-            self.data = data
+        if data < self.data:
+            if self.left is None:
+                self.left = Tree(data)
+            else:
+                self.left.insert(data)
+        elif data > self.data:
+            if self.right is None:
+                self.right = Tree(data)
+            else:
+                self.right.insert(data)
 
-    def inorder(self, root):
+    def inorder(self):
         res = []
-        if root:
-            res = self.inorder(root.left)
-            res.append(root.data)
-            res = res + self.inorder(root.right)
+        if self.left:
+            res = self.left.inorder()
+        res.append(self.data)
+        if self.right:
+            res = res + self.right.inorder()
         return res
 
-    def preorder(self, root):
-        res = []
-        if root:
-            res.append(root.data)
-            res = res + self.preorder(root.left)
-            res = res + self.preorder(root.right)
+    def preorder(self):
+        res = [self.data]
+        if self.left:
+            res = res + self.left.preorder()
+        if self.right:
+            res = res + self.right.preorder()
         return res
 
-    def BFS(self, root):
-        if root is None:
+    def BFS(self):
+        if self is None:
             return
-        q = []
-        q.append(root)
-        while len(q) > 0:
-            print(q[0].data)
-            node = q.pop(0)
-            if node.left is not None:
-                q.append(node.left)
-            if node.right is not None:
-                q.append(node.right)
+        queue = [self]
+        while queue:
+            node = queue.pop(0)
+            print(node.data)
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
 
-    def DFS(self, root):
-        if root is None:
+    def DFS(self):
+        if self is None:
             return
-        s = []
-        s.append(root)
-        while len(s) > 0:
-            print(s[-1].data)
-            node = s.pop()
-            if node.right is not None:
-                s.append(node.right)
-            if node.left is not None:
-                s.append(node.left)
+        stack = [self]
+        while stack:
+            node = stack.pop()
+            print(node.data)
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
 
 
 if __name__ == "__main__":
     root = Tree(12)
-    root.insert(6)
-    root.insert(14)
-    root.insert(3)
-    root.insert(8)
-    root.insert(13)
-    root.insert(15)
-    root.insert(7)
-    root.insert(9)
-    root.insert(11)
-    root.insert(10)
+    data_list = [6, 14, 3, 8, 13, 15, 7, 9, 11, 10]
+    for data in data_list:
+        root.insert(data)
 
     print("Inorder")
-    print(root.inorder(root))
+    print(root.inorder())
 
     print("Preorder")
-    print(root.preorder(root))
+    print(root.preorder())
 
     print("BFS")
-    root.BFS(root)
+    root.BFS()
 
     print("DFS")
-    root.DFS(root)
+    root.DFS()

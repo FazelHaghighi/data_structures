@@ -6,45 +6,39 @@ class Stack:
         self.items.append(item)
 
     def pop(self):
-        if self.isEmpty():
+        if self.is_empty():
             return "Stack is empty!"
         return self.items.pop()
 
-    def makeEmpty(self):
-        if self.isEmpty():
+    def make_empty(self):
+        if self.is_empty():
             return "Stack is empty!"
         self.items = []
 
-    def isEmpty(self):
-        return self.items == []
+    def is_empty(self):
+        return not self.items
 
-    def isFull(self):
-        return self.items == 100
-
-    def insertAtBottom(self, item):
-        if self.isEmpty():
+    def insert_at_bottom(self, item):
+        if self.is_empty():
             self.push(item)
         else:
             temp = self.pop()
-            self.insertAtBottom(item)
+            self.insert_at_bottom(item)
             self.push(temp)
 
     def reverse(self):
-        if self.isEmpty():
+        if self.is_empty():
             return
         else:
             temp = self.pop()
             self.reverse()
-            self.insertAtBottom(temp)
+            self.insert_at_bottom(temp)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return str(self.items)
 
 
-from stack import Stack
-
 if __name__ == "__main__":
-
     s = Stack()
     s.push(1)
     s.push(2)
@@ -52,7 +46,7 @@ if __name__ == "__main__":
     s.push(4)
     s.push(5)
 
-    print(s.isEmpty())
+    print(s.is_empty())
     print(s)
 
     print(s.pop())
@@ -61,7 +55,7 @@ if __name__ == "__main__":
     print(s.pop())
     print(s.pop())
 
-    print(s.isEmpty())
+    print(s.is_empty())
     print(s)
 
     s.push(1)
@@ -74,6 +68,6 @@ if __name__ == "__main__":
 
     print(s)
 
-    s.makeEmpty()
+    s.make_empty()
 
-    print(s.isEmpty())
+    print(s.is_empty())

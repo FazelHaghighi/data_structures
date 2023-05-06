@@ -6,31 +6,27 @@ class Queue:
         self.items.append(item)
 
     def dequeue(self):
-        if self.isEmpty():
+        if self.is_empty():
             return "Queue is empty!"
         return self.items.pop(0)
 
-    def makeEmpty(self):
+    def make_empty(self):
         self.items = []
 
-    def isEmpty(self):
-        return self.items == []
+    def is_empty(self):
+        return not self.items
 
-    def makeNewQueue(self, queue, firstFront, firstRear, secondFront, secondRear, n):
-        newQueue = Queue()
+    def make_new_queue(self, first_front, first_rear, second_front, second_rear, n):
+        new_queue = Queue()
         if n == 1:
-            for i in range(firstFront, firstRear):
-                newQueue.enqueue(self.items[i])
-        if n == 2:
-            for i in range(secondFront, secondRear):
-                newQueue.enqueue(self.items[i])
-        return newQueue
+            new_queue.items = self.items[first_front:first_rear]
+        elif n == 2:
+            new_queue.items = self.items[second_front:second_rear]
+        return new_queue
 
-    def __str__(self) -> str:
+    def __str__(self):
         return str(self.items)
 
-
-from queue import Queue
 
 if __name__ == "__main__":
     q = Queue()
@@ -40,7 +36,7 @@ if __name__ == "__main__":
     q.enqueue(4)
     q.enqueue(5)
 
-    print(q.isEmpty())
+    print(q.is_empty())
 
     print(q.dequeue())
     print(q.dequeue())
@@ -48,7 +44,7 @@ if __name__ == "__main__":
     print(q.dequeue())
     print(q.dequeue())
 
-    print(q.isEmpty())
+    print(q.is_empty())
     print(q)
 
     q.enqueue(1)
@@ -57,11 +53,11 @@ if __name__ == "__main__":
     q.enqueue(4)
     q.enqueue(5)
 
-    q.makeEmpty()
+    q.make_empty()
 
     print(q)
 
-    print(q.isEmpty())
+    print(q.is_empty())
 
     q.enqueue(1)
     q.enqueue(2)
@@ -73,5 +69,5 @@ if __name__ == "__main__":
 
     print(q)
 
-    print(q.makeNewQueue(q, 0, 2, 3, 4, 1))
-    print(q.makeNewQueue(q, 0, 2, 3, 4, 2))
+    print(q.make_new_queue(0, 2, 3, 4, 1))
+    print(q.make_new_queue(0, 2, 3, 4, 2))

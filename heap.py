@@ -1,4 +1,5 @@
-class heap:
+class Heap:
+    @staticmethod
     def heapify(arr, n, i):
         largest = i
         l = 2 * i + 1
@@ -12,17 +13,16 @@ class heap:
 
         if largest != i:
             arr[i], arr[largest] = arr[largest], arr[i]
-            heap.heapify(arr, n, largest)
+            Heap.heapify(arr, n, largest)
 
+    @staticmethod
     def insert(array, newNum):
+        array.append(newNum)
         size = len(array)
-        if size == 0:
-            array.append(newNum)
-        else:
-            array.append(newNum)
-            for i in range((size // 2) - 1, -1, -1):
-                heap.heapify(array, size, i)
+        for i in range((size // 2) - 1, -1, -1):
+            Heap.heapify(array, size, i)
 
+    @staticmethod
     def deleteNode(array, num):
         size = len(array)
         i = 0
@@ -35,19 +35,19 @@ class heap:
         array.remove(num)
 
         for i in range((len(array) // 2) - 1, -1, -1):
-            heap.heapify(array, len(array), i)
+            Heap.heapify(array, len(array), i)
 
 
 if __name__ == "__main__":
     arr = []
 
-    heap.insert(arr, 3)
-    heap.insert(arr, 4)
-    heap.insert(arr, 9)
-    heap.insert(arr, 5)
-    heap.insert(arr, 2)
+    Heap.insert(arr, 3)
+    Heap.insert(arr, 4)
+    Heap.insert(arr, 9)
+    Heap.insert(arr, 5)
+    Heap.insert(arr, 2)
 
     print(str(arr))
 
-    heap.deleteNode(arr, 4)
+    Heap.deleteNode(arr, 4)
     print(str(arr))

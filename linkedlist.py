@@ -5,14 +5,14 @@ class Node:
         self.prev = prev
 
 
-class doubly_linked_list:
-    def __init__(self, head=None, tail=None) -> None:
+class DoublyLinkedList:
+    def __init__(self, head=None, tail=None):
         self.head = head
         self.tail = tail
 
     @classmethod
     def bind(cls, list1, list2):
-        linked_list = doubly_linked_list()
+        linked_list = cls()
 
         if list1.size() > list2.size():
             main_temp = list1.head
@@ -20,28 +20,28 @@ class doubly_linked_list:
         else:
             main_temp = list2.head
             temp = list1.head
+
         while main_temp:
             linked_list.push_back(main_temp.data)
             main_temp = main_temp.next
-            if temp != None:
+            if temp:
                 linked_list.push_back(temp.data)
                 temp = temp.next
 
         return linked_list
 
     @classmethod
-    def convert(cls, list):
-        temp = list.head
-        temp_back = list.head.prev
+    def convert(cls, linked_list):
+        temp = linked_list.head
+        temp_back = linked_list.head.prev
 
         while temp:
             temp.prev = temp_back
             temp_back = temp
             temp = temp.next
+
         tail = temp_back
-        temp = None
-        temp_back = None
-        return cls(head=list.head, tail=tail)
+        return cls(head=linked_list.head, tail=tail)
 
     def size(self):
         temp = self.head
@@ -61,17 +61,15 @@ class doubly_linked_list:
         self.head = new_node
 
     def get_by_pos(self, pos):
-        if not self.head:
-            return None
-        else:
-            for i in range(0, pos + 1):
-                if i == pos and self.head is not None:
-                    return self.head.data
+        temp = self.head
+        for i in range(0, pos + 1):
+            if i == pos and self.head:
+                return self.head.data
+            else:
+                if self.head.next:
+                    self.head = self.head.next
                 else:
-                    if self.head.next:
-                        self.head = self.head.next
-                    else:
-                        return None
+                    return None
 
     def delete_by_pos(self, pos):
         temp = self.head
@@ -82,7 +80,7 @@ class doubly_linked_list:
             return
         else:
             for i in range(pos + 1):
-                if i == pos and temp is not None:
+                if i == pos and temp:
                     temp_front = temp.next
                     temp_back = temp.prev
                     temp_front.prev = temp_back
@@ -97,7 +95,7 @@ class doubly_linked_list:
 
     def push_back(self, data):
         new_node = Node(data)
-        if self.tail is None:
+        if not self.tail:
             self.head = new_node
             self.tail = new_node
         else:
@@ -142,35 +140,34 @@ class doubly_linked_list:
     def insert_after(self, node, data):
         if not node:
             return None
+
+        new_node = Node(data)
+        new_node.prev = node
+
+        if node == self.tail:
+            self.tail = new_node
         else:
-            new_node = Node(data)
+            new_node.next = node.next
+            new_node.next.prev = new_node
 
-            new_node.prev = node
-
-            if node == self.tail:
-                self.tail = new_node
-            else:
-                new_node.next = node.next
-                new_node.next.prev = new_node
-
-            node.next = new_node
+        node.next = new_node
 
     def __str__(self) -> str:
-        if self.head is None:
+        if not self.head:
             return "The list is empty!"
-        else:
-            n = self.head
-            string = ""
-            while n is not None:
-                string += str(n.data) + " "
-                n = n.next
+        
+        n = self.head
+        string = ""
+        while n is not None:
+            string += str(n.data) + " "
+            n = n.next
+
         return string
 
 
 if __name__ == "__main__":
-
-    list1 = doubly_linked_list()
-    list2 = doubly_linked_list()
+    list1 = DoublyLinkedList()
+    list2 = DoublyLinkedList()
 
     list1.push_back(1)
     list1.push_back(2)
@@ -185,9 +182,9 @@ if __name__ == "__main__":
     print("list1: ", list1)
     print("list2: ", list2)
 
-    list3 = list1.bind(list1, list2)
+    list3 = DoublyLinkedList.bind(list1, list2)
     print("list3: ", list3)
 
-    list1 = list1.convert(list1)
-
+    list1 = DoublyLinkedList.convert(list1)
     print("list1: ", list1)
+
